@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Feliz Cumple Trinuchi! 🎉</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Fraunces:ital,wght@0,400;0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fce7f3;
+    --bg-2: #fbcfe8;
+    --ink: #4a1d3f;
+    --accent: #e11d74;
+    --gold: #d4a017;
+    --cream: #fff8f0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Fraunces', serif;
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 50%, #f9a8d4 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Textura de fondo */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 20% 30%, rgba(225, 29, 116, 0.08) 0%, transparent 40%),
+                      radial-gradient(circle at 80% 70%, rgba(212, 160, 23, 0.08) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    text-align: center;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    color: var(--accent);
+    background: var(--cream);
+    padding: 6px 20px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 16px rgba(225, 29, 116, 0.15);
+    transform: rotate(-2deg);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+    color: var(--ink);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  h1 .highlight {
+    color: var(--accent);
+    position: relative;
+    display: inline-block;
+  }
+
+  h1 .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    height: 12px;
+    background: var(--gold);
+    z-index: -1;
+    opacity: 0.4;
+    transform: skew(-10deg);
+  }
+
+  .subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem;
+    color: var(--ink);
+    opacity: 0.8;
+    margin-bottom: 50px;
+  }
+
+  .search-section {
+    background: var(--cream);
+    border-radius: 32px;
+    padding: 40px 32px;
+    box-shadow: 0 20px 60px rgba(225, 29, 116, 0.2),
+                0 0 0 1px rgba(225, 29, 116, 0.08);
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .search-section::before {
+    content: '✨';
+    position: absolute;
+    top: -20px;
+    left: 30px;
+    font-size: 2rem;
+    transform: rotate(-15deg);
+  }
+
+  .search-section::after {
+    content: '🎂';
+    position: absolute;
+    top: -20px;
+    right: 30px;
+    font-size: 2rem;
+    transform: rotate(15deg);
+  }
+
+  .search-label {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .search-box {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 24px;
+  }
+
+  .search-btn {
+    padding: 18px 40px;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 999px;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .toggle-all-btn {
+    display: inline-block;
+    margin-top: 30px;
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    padding: 12px 28px;
+    border-radius: 999px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .toggle-all-btn:hover {
+    background: var(--accent);
+    color: var(--cream);
+    transform: translateY(-2px);
+  }
+
+  .all-facts {
+    margin-top: 30px;
+    text-align: left;
+    display: none;
+    animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .all-facts.visible {
+    display: block;
+  }
+
+  .category-group {
+    margin-bottom: 32px;
+  }
+
+  .category-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px dashed var(--accent);
+  }
+
+  .fact-item {
+    background: var(--cream);
+    padding: 16px 20px;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    box-shadow: 0 4px 12px rgba(225, 29, 116, 0.08);
+    transition: transform 0.2s ease;
+  }
+
+  .fact-item:hover {
+    transform: translateX(4px);
+  }
+
+  .fact-item-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .fact-item-text {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .search-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px) rotate(-1deg);
+    box-shadow: 0 8px 24px rgba(225, 29, 116, 0.4);
+  }
+
+  .result-card {
+    background: linear-gradient(135deg, #fff 0%, #fff5f9 100%);
+    border-radius: 20px;
+    padding: 32px 28px;
+    margin-top: 20px;
+    border: 2px dashed var(--accent);
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .result-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .result-text {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  .result-category {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .placeholder {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--ink);
+    opacity: 0.5;
+  }
+
+  /* Lluvia de stickers */
+  .sticker-rain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .sticker {
+    position: absolute;
+    top: -60px;
+    font-size: 2rem;
+    user-select: none;
+    animation: fall linear infinite;
+    opacity: 0.85;
+    filter: drop-shadow(0 4px 8px rgba(225, 29, 116, 0.25));
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+    }
+    100% {
+      transform: translateY(110vh) rotate(720deg);
+    }
+  }
+
+  .footer {
+    margin-top: 60px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    color: var(--ink);
+    opacity: 0.7;
+  }
+
+  .footer .heart {
+    color: var(--accent);
+    display: inline-block;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 40px 16px; }
+    .search-section { padding: 28px 20px; }
+    .search-box { flex-direction: column; }
+    .search-btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sticker-rain" id="stickerRain"></div>
+
+<div class="container">
+  <span class="badge">~ una pequeña celebración ~</span>
+  <h1>¡Feliz Cumple <span class="highlight">Trinuchi</span>! 🎉</h1>
+  <p class="subtitle">un día mágico merece datos mágicos 🥳✨</p>
+
+  <div class="search-section">
+    <span class="search-label">apretá el botón mágico 🔮</span>
+    <div class="search-box">
+      <button class="search-btn" onclick="getRandomFact()">Dame un dato random 🎲</button>
+    </div>
+
+    <div class="result-card" id="resultCard">
+      <p class="placeholder">tu dato aleatorio aparecerá acá ✨</p>
+    </div>
+
+    <button class="toggle-all-btn" onclick="toggleAllFacts()" id="toggleBtn">
+      ver todos los datos ✨
+    </button>
+
+    <div class="all-facts" id="allFacts"></div>
+  </div>
+
+  <p class="footer">hecho con <span class="heart">♥</span> para tu día especial</p>
+</div>
+
+<script>
+  // === DATOS RANDOM ===
+  const randomFacts = [
+    // 🐾 Animales
+    { icon: '🐙', category: 'animales', text: 'Los pulpos tienen tres corazones y su sangre es azul.' },
+    { icon: '🐄', category: 'animales', text: 'Las vacas pueden tener mejores amigas y se estresan si se separan.' },
+    { icon: '🐬', category: 'animales', text: 'Los delfines tienen nombres propios: usan silbidos únicos para identificarse entre sí.' },
+    { icon: '🐋', category: 'animales', text: 'El corazón de una ballena azul puede pesar más de 180 kg.' },
+    { icon: '🐦‍⬛', category: 'animales', text: 'Los cuervos pueden recordar rostros humanos durante años.' },
+
+    // 🍕 Comida
+    { icon: '🍯', category: 'comida', text: 'La miel no se echa a perder nunca: se han encontrado tarros comestibles de miles de años.' },
+    { icon: '🥕', category: 'comida', text: 'Las zanahorias originalmente eran moradas, no naranjas.' },
+    { icon: '🍫', category: 'comida', text: 'El chocolate fue usado como moneda por los aztecas.' },
+    { icon: '🍜', category: 'comida', text: 'El sabor "umami" es considerado el quinto sabor básico.' },
+    { icon: '🥔', category: 'comida', text: 'Las papas fueron el primer alimento cultivado en el espacio.' },
+
+    // 🌌 Espacio
+    { icon: '🪐', category: 'espacio', text: 'En Venus, un día dura más que un año.' },
+    { icon: '🍷', category: 'espacio', text: 'Hay una nube gigante de alcohol flotando en el espacio.' },
+    { icon: '🚀', category: 'espacio', text: 'Si gritaras en el espacio, nadie te oiría: no hay aire para transmitir sonido.' },
+    { icon: '🌬️', category: 'espacio', text: 'Neptuno tiene vientos de más de 2.000 km/h.' },
+    { icon: '💎', category: 'espacio', text: 'Existen planetas donde llueven diamantes, como Júpiter o Saturno.' },
+
+    // 🌿 Naturaleza
+    { icon: '🌳', category: 'naturaleza', text: 'Los árboles pueden comunicarse entre sí mediante redes de hongos: el "internet del bosque".' },
+    { icon: '⚡', category: 'naturaleza', text: 'Un rayo es más caliente que la superficie del Sol.' },
+    { icon: '🍄', category: 'naturaleza', text: 'Hay hongos que pueden brillar en la oscuridad.' },
+    { icon: '🌳', category: 'naturaleza', text: 'El Amazonas produce cerca del 20% del oxígeno del planeta (aunque hay debate científico al respecto).' },
+    { icon: '🦩', category: 'naturaleza', text: 'Existen lagos que pueden momificar animales al instante, como el lago Natron.' },
+
+    // 🎵 Música
+    { icon: '🎶', category: 'música', text: 'Escuchar música puede liberar dopamina, igual que comer o enamorarse.' },
+    { icon: '🎼', category: 'música', text: 'El "efecto Mozart" sugiere que cierta música puede mejorar la concentración.' },
+    { icon: '🥶', category: 'música', text: 'Algunas canciones pueden provocar escalofríos físicos reales.' },
+    { icon: '🌱', category: 'música', text: 'Las plantas pueden crecer mejor con música, aunque depende del tipo.' },
+    { icon: '🤫', category: 'música', text: 'El silencio también es música: hay una obra famosa de 4\'33\'\' sin ninguna nota.' },
+
+    // 🔬 Ciencia
+    { icon: '🦠', category: 'ciencia', text: 'Tu cuerpo tiene más bacterias que células humanas.' },
+    { icon: '✨', category: 'ciencia', text: 'Los humanos brillan ligeramente en la oscuridad, pero nuestros ojos no pueden verlo.' },
+    { icon: '❄️', category: 'ciencia', text: 'El agua caliente puede congelarse más rápido que la fría: es el efecto Mpemba.' },
+    { icon: '🌍', category: 'ciencia', text: 'Un día en la Tierra no dura exactamente 24 horas: dura unas 23h 56m.' },
+    { icon: '🧠', category: 'ciencia', text: 'El cerebro humano genera suficiente electricidad para encender una bombilla pequeña.' },
+    { icon: '⭐', category: 'ciencia', text: 'Hay más estrellas en el universo que granos de arena en toda la Tierra.' },
+    { icon: '🧬', category: 'ciencia', text: 'El ADN humano es 99,9% igual en todas las personas.' },
+    { icon: '💧', category: 'ciencia', text: 'Podés sobrevivir semanas sin comida, pero solo días sin agua.' },
+    { icon: '🔩', category: 'ciencia', text: 'El vacío del espacio puede hacer que el metal se suelde solo.' },
+    { icon: '⚛️', category: 'ciencia', text: 'Los electrones pueden comportarse como partículas y ondas al mismo tiempo.' },
+    { icon: '⏳', category: 'ciencia', text: 'El tiempo pasa más lento cerca de objetos con mucha gravedad.' },
+    { icon: '🔬', category: 'ciencia', text: 'Un átomo es casi completamente espacio vacío.' },
+    { icon: '⚡', category: 'ciencia', text: 'Las neuronas pueden transmitir señales a más de 400 km/h.' },
+    { icon: '🪶', category: 'ciencia', text: 'Existen materiales más ligeros que el aire, como los aerogeles.' },
+    { icon: '🌌', category: 'ciencia', text: 'El universo observable tiene unos 93 mil millones de años luz de diámetro.' },
+  ];
+
+  function getRandomFact() {
+    const card = document.getElementById('resultCard');
+    
+    // Animación de salida + entrada
+    card.style.animation = 'none';
+    card.offsetHeight; // trigger reflow
+    
+    const fact = randomFacts[Math.floor(Math.random() * randomFacts.length)];
+    
+    card.innerHTML = `
+      <div>
+        <span class="result-icon">${fact.icon}</span>
+        <p class="result-category">${fact.category}</p>
+        <p class="result-text">${fact.text}</p>
+      </div>
+    `;
+    card.style.animation = 'pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+  }
+
+  // Mostrar un dato al cargar después de un momentito
+  setTimeout(getRandomFact, 800);
+
+  // === MOSTRAR TODOS LOS DATOS ===
+  function toggleAllFacts() {
+    const container = document.getElementById('allFacts');
+    const btn = document.getElementById('toggleBtn');
+
+    if (container.classList.contains('visible')) {
+      container.classList.remove('visible');
+      btn.innerHTML = 'ver todos los datos ✨';
+      // Scroll suave de vuelta al botón
+      btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // Agrupar por categoría
+    const groups = {};
+    randomFacts.forEach(fact => {
+      if (!groups[fact.category]) groups[fact.category] = [];
+      groups[fact.category].push(fact);
+    });
+
+    // Emojis bonitos para cada categoría
+    const categoryEmojis = {
+      'animales': '🐾',
+      'comida': '🍕',
+      'espacio': '🌌',
+      'naturaleza': '🌿',
+      'música': '🎵',
+      'ciencia': '🔬'
+    };
+
+    let html = '';
+    Object.keys(groups).forEach(category => {
+      const emoji = categoryEmojis[category] || '✨';
+      html += `<div class="category-group">
+        <h2 class="category-title">${emoji} ${category}</h2>`;
+      groups[category].forEach(fact => {
+        html += `<div class="fact-item">
+          <span class="fact-item-icon">${fact.icon}</span>
+          <p class="fact-item-text">${fact.text}</p>
+        </div>`;
+      });
+      html += `</div>`;
+    });
+
+    container.innerHTML = html;
+    container.classList.add('visible');
+    btn.innerHTML = 'ocultar lista ↑';
+  }
+
+  // === LLUVIA DE STICKERS ===
+  // Mix de tomates 🍅, vibes Taylor Swift (gatos, cardigans, cassettes, guitarras),
+  // vibes Sabrina Carpenter (espresso, lazos, corazones, labiales) + festejo
+  const stickers = [
+    // Tomates 🍅
+    '🍅', '🍅', '🍅', '🍅',
+    // Vibes Taylor Swift 🧣🐱📼
+    '🎸', '🎤', '🐈', '🐱', '🧣', '📼', '💿', '💖', '💕', '🦋', '🌟',
+    // Vibes Sabrina Carpenter 🎀☕💋
+    '🎀', '☕', '💋', '🩷', '🫧', '👄', '💄', '🌸',
+    // Festejo cumpleaños 🎉
+    '🎉', '🎂', '🎈', '🥳', '🎊', '🪩',
+    // Música y brillo general
+    '🎵', '🎶', '✨', '⭐', '👑', '🌹'
+  ];
+
+  const rainContainer = document.getElementById('stickerRain');
+
+  function createSticker() {
+    const sticker = document.createElement('div');
+    sticker.className = 'sticker';
+    sticker.textContent = stickers[Math.floor(Math.random() * stickers.length)];
+    
+    // Posición horizontal random
+    sticker.style.left = Math.random() * 100 + '%';
+    
+    // Tamaño random (variedad)
+    const size = 1.2 + Math.random() * 2;
+    sticker.style.fontSize = size + 'rem';
+    
+    // Velocidad de caída random
+    const duration = 6 + Math.random() * 8;
+    sticker.style.animationDuration = duration + 's';
+    
+    // Delay ligero
+    sticker.style.animationDelay = Math.random() * 2 + 's';
+    
+    // Opacidad variable
+    sticker.style.opacity = 0.5 + Math.random() * 0.5;
+    
+    rainContainer.appendChild(sticker);
+    
+    // Limpiar el DOM cuando termine
+    setTimeout(() => {
+      sticker.remove();
+    }, (duration + 2) * 1000);
+  }
+
+  // Crear stickers iniciales
+  for (let i = 0; i < 25; i++) {
+    setTimeout(createSticker, i * 200);
+  }
+
+  // Crear nuevos stickers continuamente
+  setInterval(createSticker, 400);
+
+  // Mostrar un dato al cargar después de 1 segundo
+  setTimeout(getRandomFact, 800);
+</script>
+</body>
+</html>
